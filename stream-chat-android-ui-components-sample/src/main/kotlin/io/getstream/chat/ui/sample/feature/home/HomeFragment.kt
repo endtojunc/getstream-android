@@ -175,12 +175,14 @@ class HomeFragment : Fragment() {
             setOnNavigationItemReselectedListener {}
             setBackgroundResource(R.drawable.shape_bottom_navigation_background)
             getOrCreateBadge(R.id.channels_fragment).apply {
-                backgroundColor = ContextCompat.getColor(requireContext(), R.color.stream_ui_accent_red)
-                badgeTextColor = ContextCompat.getColor(requireContext(), R.color.stream_ui_literal_white)
-            }
-            getOrCreateBadge(R.id.mentions_fragment).apply {
-                backgroundColor = ContextCompat.getColor(requireContext(), R.color.stream_ui_accent_red)
-                badgeTextColor = ContextCompat.getColor(requireContext(), R.color.stream_ui_literal_white)
+                getOrCreateBadge(R.id.channels_fragment).apply {
+                    backgroundColor = ContextCompat.getColor(requireContext(), R.color.stream_ui_accent_red)
+                    badgeTextColor = ContextCompat.getColor(requireContext(), R.color.stream_ui_literal_white)
+                }
+                getOrCreateBadge(R.id.settings_fragment).apply {
+                    backgroundColor = ContextCompat.getColor(requireContext(), R.color.stream_ui_accent_red)
+                    badgeTextColor = ContextCompat.getColor(requireContext(), R.color.stream_ui_literal_white)
+                }
             }
         }
     }
@@ -224,7 +226,7 @@ class HomeFragment : Fragment() {
     private fun renderState(state: HomeViewModel.UiState) {
         binding.bottomNavigationView.apply {
             setBadgeNumber(R.id.channels_fragment, state.totalUnreadCount)
-            setBadgeNumber(R.id.mentions_fragment, state.mentionsUnreadCount)
+            setBadgeNumber(R.id.settings_fragment, state.mentionsUnreadCount)
         }
 
         nameTextView.text = state.user.name

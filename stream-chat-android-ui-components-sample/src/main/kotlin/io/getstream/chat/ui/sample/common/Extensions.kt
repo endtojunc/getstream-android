@@ -50,6 +50,12 @@ fun Fragment.showToast(text: String) {
     Toast.makeText(activity, text, Toast.LENGTH_SHORT).show()
 }
 
+fun Fragment.addChildFragment(layoutId: Int, fragment: Fragment) {
+    val transaction = childFragmentManager.beginTransaction()
+    transaction.add(layoutId, fragment)
+    transaction.commit()
+}
+
 fun Context.getColorFromRes(@ColorRes id: Int): Int {
     return ContextCompat.getColor(this, id)
 }

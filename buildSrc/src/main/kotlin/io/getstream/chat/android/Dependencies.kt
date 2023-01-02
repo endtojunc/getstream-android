@@ -77,6 +77,7 @@ object Versions {
     internal const val TIMBER = "5.0.1"
     internal const val TURBINE = "0.10.0"
     internal const val WORK = "2.7.1"
+    internal const val GSON = "2.10"
 }
 
 object Dependencies {
@@ -204,6 +205,7 @@ object Dependencies {
     const val turbine = "app.cash.turbine:turbine:${Versions.TURBINE}"
     const val workRuntimeKtx = "androidx.work:work-runtime-ktx:${Versions.WORK}"
     const val workTesting = "androidx.work:work-testing:${Versions.WORK}"
+    const val gson = "com.google.code.gson:gson:${Versions.GSON}"
 
     @JvmStatic
     fun isNonStable(version: String): Boolean = isStable(version).not()

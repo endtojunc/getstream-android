@@ -79,7 +79,7 @@ class UserLoginFragment : Fragment() {
         with(binding.sdkVersion) {
             text = getString(R.string.sdk_version_template, STREAM_CHAT_VERSION)
             setOnClickListener {
-                navigateSafely(R.id.action_userLoginFragment_to_componentBrowserHomeFragment)
+
             }
         }
     }
@@ -98,7 +98,7 @@ class UserLoginFragment : Fragment() {
             EventObserver {
                 when (it) {
                     is UserLoginViewModel.UiEvent.RedirectToComponentBrowser -> {
-                        navigateSafely(R.id.action_userLoginFragment_to_customLoginFragment)
+
                     }
                     is UserLoginViewModel.UiEvent.RedirectToChannels -> {
                         navigateSafely(R.id.action_userLoginFragment_to_homeFragment)

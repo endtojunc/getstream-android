@@ -30,9 +30,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/mentions_fragment"
-        android:name="io.getstream.chat.ui.sample.feature.mentions.MentionsFragment"
-        android:label="MentionsFragment"
+        android:id="@+id/settings_fragment"
+        android:name="io.getstream.chat.ui.sample.feature.settings.SettingsFragment"
+        android:label="SettingsFragment"
         tools:layout="@layout/fragment_mentions"
         />
 </navigation>

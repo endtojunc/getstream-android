@@ -1,4 +1,4 @@
-import io.getstream.chat.android.Configuration
+ import io.getstream.chat.android.Configuration
 import io.getstream.chat.android.Dependencies
 
 apply plugin: 'com.android.application'
@@ -13,6 +13,7 @@ apply from: "${rootDir}/scripts/android.gradle"
 
 android {
     defaultConfig {
+
         targetSdk Configuration.sampleTargetSdk
         applicationId "io.getstream.chat.ui.sample"
         versionCode sampleAppVersionCode
@@ -164,6 +165,12 @@ dependencies {
     implementation Dependencies.coil
     implementation Dependencies.coilGif
     implementation Dependencies.shimmer
+
+    implementation Dependencies.okhttp
+    implementation Dependencies.gson
+
+    implementation 'com.hbb20:ccp:2.4.7'
+    implementation 'io.michaelrocks:libphonenumber-android:8.13.3'
 
     debugImplementation Dependencies.flipper
     debugImplementation Dependencies.flipperNetwork
