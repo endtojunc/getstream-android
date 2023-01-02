@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import io.getstream.chat.android.livedata.utils.EventObserver
 import io.getstream.chat.ui.sample.common.addChildFragment
+import io.getstream.chat.ui.sample.common.navigateSafely
 import io.getstream.chat.ui.sample.databinding.FragmentForgotPasswordBinding
 import io.getstream.chat.ui.sample.feature.otp.OTPFragment
 
@@ -33,7 +34,7 @@ class ForgotPasswordFragment: Fragment() {
     private fun setupViews() {
         binding.toolbar.setNavigationIcon(R.drawable.ic_delete)
         binding.toolbar.setNavigationOnClickListener {
-
+            navigateSafely(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToUserCustomLoginFragment())
         }
 
         binding.registerButton.setOnClickListener {
@@ -48,7 +49,9 @@ class ForgotPasswordFragment: Fragment() {
             viewLifecycleOwner,
             EventObserver {
                 when (it) {
-                    is ForgotUserViewModel.UiEvent.RedirectToLogin -> {}
+                    is ForgotUserViewModel.UiEvent.RedirectToLogin -> {
+                        navigateSafely(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToUserCustomLoginFragment())
+                    }
                 }
             }
         )

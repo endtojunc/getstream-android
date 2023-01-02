@@ -15,11 +15,11 @@ android {
     defaultConfig {
 
         targetSdk Configuration.sampleTargetSdk
-        applicationId "io.getstream.chat.ui.sample"
+        applicationId "com.mychatapps.gepo"
         versionCode sampleAppVersionCode
         versionName sampleAppVersionName
         testInstrumentationRunner "com.karumi.shot.ShotTestRunner"
-        testApplicationId "io.getstream.chat.ui.sample"
+        testApplicationId "com.mychatapps.gepo"
     }
 
     packagingOptions {
@@ -122,7 +122,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 }
 
 shot {
-    applicationId = "io.getstream.chat.ui.sample"
+    applicationId = "com.mychatapps.gepo"
 }
 
 repositories {

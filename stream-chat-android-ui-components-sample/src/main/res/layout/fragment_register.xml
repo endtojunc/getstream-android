@@ -51,7 +51,7 @@
         android:layout_marginTop="@dimen/spacing_medium"
         android:layout_marginEnd="@dimen/spacing_medium"
         android:layout_marginBottom="60dp"
-        app:constraint_referenced_ids="userNameInputLayout, passwordInputLayout"
+        app:constraint_referenced_ids="nameInputLayout, userNameInputLayout, passwordInputLayout"
         app:flow_lastVerticalStyle="packed"
         app:flow_maxElementsWrap="1"
         app:flow_verticalGap="8dp"
@@ -62,6 +62,21 @@
         app:layout_constraintTop_toBottomOf="@+id/errorTitle"
         app:layout_constraintVertical_bias="0"
         />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/nameInputLayout"
+        style="@style/LoginEditTextInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/user_login_name"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nameEditText"
+            style="@style/LoginEditText"
+            tools:ignore="RtlHardcoded"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/userNameInputLayout"

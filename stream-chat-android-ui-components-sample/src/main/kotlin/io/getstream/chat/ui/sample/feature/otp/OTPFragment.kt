@@ -48,7 +48,15 @@ class OTPFragment: Fragment() {
         )
     }
 
-    public fun getOtp(): String {
+    fun getCountryCode(): String {
+        return binding.ccp.selectedCountryCode
+    }
+
+    fun getPhoneNo(): String {
+        return binding.phoneNumberEditText.text.toString()
+    }
+
+    fun getOtp(): String {
         return binding.otpEditText.text.toString()
     }
 }

@@ -41,12 +41,11 @@ class RegisterUserViewModel: ViewModel() {
     }
 
     sealed class UiAction {
-        data class registerClicked(val username: String, val password: String, val phoneNo: String, val countryCode: String, val generateOtp: String, val role: String): UiAction()
+        data class registerClicked(val name: String, val username: String, val password: String, val phoneNo: String, val countryCode: String, val generateOtp: String, val role: String): UiAction()
     }
 
     sealed class UiEvent {
         object RedirectToLogin: UiEvent()
-        data class RegisterResult(val user: SampleUser) : UiEvent()
         data class Error(val errorMessage: String?) : UiEvent()
     }
 }
