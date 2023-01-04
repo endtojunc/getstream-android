@@ -26,6 +26,7 @@
     <color name="white">#FFFFFF</color>
     <color name="green">#00FF00</color>
     <color name="red">#FF0000</color>
+    <color name="alert_red">#FF8383</color>
 
     <color name="channels_shimmer_color">#CCCCCC</color>
 

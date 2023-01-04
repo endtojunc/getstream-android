@@ -15,11 +15,11 @@ android {
     defaultConfig {
 
         targetSdk Configuration.sampleTargetSdk
-        applicationId "com.mychatapps.gepo"
+        applicationId "io.getstream.chat.ui.sample"
         versionCode sampleAppVersionCode
         versionName sampleAppVersionName
         testInstrumentationRunner "com.karumi.shot.ShotTestRunner"
-        testApplicationId "com.mychatapps.gepo"
+        testApplicationId "io.getstream.chat.ui.sample"
     }
 
     packagingOptions {

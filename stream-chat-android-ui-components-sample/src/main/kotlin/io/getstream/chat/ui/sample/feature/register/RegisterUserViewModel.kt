@@ -21,13 +21,13 @@ class RegisterUserViewModel: ViewModel() {
     fun onUiAction(action: UiAction) {
         when (action) {
             is UiAction.registerClicked -> {
-                registerUser(username = action.username, password = action.password, phoneNo = action.phoneNo, countryCode = action.countryCode, generateOtp = action.generateOtp, role = action.role)
+                registerUser(name = action.name, username = action.username, password = action.password, phoneNo = action.phoneNo, countryCode = action.countryCode, generateOtp = action.generateOtp, role = action.role)
             }
         }
     }
 
-    fun registerUser(username: String, password: String, phoneNo: String, countryCode: String, generateOtp: String, role: String) {
-        networkWorker.registerUser(username = username, name = "", password = password, phoneNo = phoneNo, countryCode = countryCode, generateOtp = generateOtp, streamRole = role, callback = {
+    fun registerUser(name: String, username: String, password: String, phoneNo: String, countryCode: String, generateOtp: String, role: String) {
+        networkWorker.registerUser(username = username, name = name, password = password, phoneNo = phoneNo, countryCode = countryCode, generateOtp = generateOtp, streamRole = role, callback = {
             if (it.isSuccess) {
                 _events.postValue(Event(UiEvent.RedirectToLogin))
             } else {

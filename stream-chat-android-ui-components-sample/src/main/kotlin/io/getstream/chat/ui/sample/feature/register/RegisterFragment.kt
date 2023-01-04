@@ -42,7 +42,7 @@ class RegisterFragment: Fragment() {
         binding.registerButton.setOnClickListener {
             val username = binding.usernameEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            var name = binding.nameEditText.text.toString()
+            val name = binding.nameEditText.text.toString()
             val streamrole = "admin"
             val phoneNo = otpFragment.getPhoneNo()
             val countryCode = otpFragment.getCountryCode()
@@ -71,6 +71,7 @@ class RegisterFragment: Fragment() {
                     }
                     is RegisterUserViewModel.UiEvent.Error -> {
                         binding.errorTitle.text = it.errorMessage
+                        binding.errorTitle.visibility = View.VISIBLE
                     }
                 }
             }

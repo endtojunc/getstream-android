@@ -1,5 +1,6 @@
 package io.getstream.chat.ui.sample.common
 
+import android.util.Log
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.MediaType.Companion.toMediaType
@@ -7,6 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 import java.net.URL
@@ -22,7 +24,7 @@ class NetworkWorker {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                print(response.body.toString())
+                Log.d("", response.body.toString())
                 val networkResponse = NetworkResponse(isSuccess = response.isSuccessful, errorMessage = response.message, response = mapOf("" to "", "" to ""))
                 callback.invoke(networkResponse)
             }
@@ -30,7 +32,7 @@ class NetworkWorker {
     }
 
     fun registerUser(username: String, name: String, password: String, phoneNo: String, countryCode: String, streamRole: String = "user", generateOtp: String, callback: (NetworkResponse) -> Unit) {
-        val request = Endpoint(requestParams = mapOf("username" to username, "password" to password, "phoneNo" to phoneNo, "countryCode" to countryCode, "generateOtp" to generateOtp, "streamRole" to streamRole), url = "registerUser", httpMethod = HttpMethod.POST).toRequest()
+        val request = Endpoint(requestParams = mapOf("name" to name, "username" to username, "password" to password, "phonenumber" to phoneNo, "countrycode" to "+" + countryCode, "generateotp" to generateOtp, "streamrole" to streamRole), url = "registerUser", httpMethod = HttpMethod.POST).toRequest()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object: Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -39,8 +41,17 @@ class NetworkWorker {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                print(response.body.toString())
-                val networkResponse = NetworkResponse(isSuccess = response.isSuccessful, errorMessage = response.message, response = mapOf("" to "", "" to ""))
+                var errorMessage = ""
+                response.body?.let {
+                    val jsonArray = JSONArray(it.string())
+                    if (jsonArray.length() > 0) {
+                        val jsonObject = jsonArray.getJSONObject(0)
+                        if (jsonObject.has("errorMessages")) {
+                            errorMessage = jsonObject.getJSONArray("errorMessages").join("\n")
+                        }
+                    }
+                }
+                val networkResponse = NetworkResponse(isSuccess = response.isSuccessful, errorMessage = errorMessage)
                 callback.invoke(networkResponse)
             }
         })
@@ -90,7 +101,7 @@ class NetworkWorker {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                print(response.body.toString())
+                print(response.body?.source())
                 val networkResponse = NetworkResponse(isSuccess = response.isSuccessful, errorMessage = response.message, response = mapOf("" to "", "" to ""))
                 callback.invoke(networkResponse)
             }
@@ -105,6 +116,7 @@ class NetworkWorker {
 class Endpoint(val requestParams: Map<String, String>, val url: String, val httpMethod: HttpMethod) {
     fun toRequest(): Request {
         val requestBuilder = Request.Builder()
+        requestBuilder.addHeader("Content-Type", "application/json")
         requestBuilder.addHeader("x-api-key", "d9af4f56-5402-4283-9b92-09f321712fb4")
         requestBuilder.url(URL("https://test-chattingapp-api.directmessenger.info/api/MobileAuth/$url"))
         if (httpMethod == HttpMethod.POST) {

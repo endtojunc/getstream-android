@@ -29,20 +29,6 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/errorTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        android:textColor="@color/red"
-        app:layout_constraintBottom_toTopOf="@id/inputFieldsFlow"
-        tools:text="This is error message"
-        android:gravity="center"
-        android:visibility="gone"/>
-
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/inputFieldsFlow"
         android:layout_width="match_parent"
@@ -51,7 +37,7 @@
         android:layout_marginTop="@dimen/spacing_medium"
         android:layout_marginEnd="@dimen/spacing_medium"
         android:layout_marginBottom="60dp"
-        app:constraint_referenced_ids="nameInputLayout, userNameInputLayout, passwordInputLayout"
+        app:constraint_referenced_ids="errorTitle, nameInputLayout, userNameInputLayout, passwordInputLayout"
         app:flow_lastVerticalStyle="packed"
         app:flow_maxElementsWrap="1"
         app:flow_verticalGap="8dp"
@@ -59,9 +45,21 @@
         app:layout_constraintBottom_toTopOf="@id/registerButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/errorTitle"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintVertical_bias="0"
         />
+
+    <TextView
+        android:id="@+id/errorTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@color/alert_red"
+        android:textColor="@color/black"
+        tools:text="This is where the error message shown."
+        android:gravity="center"
+        app:cornerRadius="24dp"
+        android:visibility="gone"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nameInputLayout"
