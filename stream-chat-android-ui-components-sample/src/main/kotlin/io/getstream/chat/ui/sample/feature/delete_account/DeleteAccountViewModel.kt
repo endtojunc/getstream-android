@@ -4,18 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.getstream.chat.android.livedata.utils.Event
-import io.getstream.chat.ui.sample.data.user.SampleUser
+import io.getstream.chat.ui.sample.common.NetworkWorker
 import io.getstream.logging.StreamLog
 
 class DeleteAccountViewModel: ViewModel() {
 
     private val _events = MutableLiveData<Event<UiEvent>>()
-    private val _state = MutableLiveData<State>()
-
     private val logger = StreamLog.getLogger("Chat:LoginViewModel")
-
-    var state: LiveData<State> = _state
     var events: LiveData<Event<UiEvent>> = _events
+    private val networkWorker = NetworkWorker()
 
     fun onUiAction(action: UiAction) {
         when (action) {
@@ -24,11 +21,13 @@ class DeleteAccountViewModel: ViewModel() {
     }
 
     private fun deleteUser(username: String) {
-
-    }
-
-    sealed class State {
-        data class DeletedUser(val user: SampleUser): State()
+        networkWorker.deleteAccount(username, callback = {
+            if (it.isSuccess) {
+                _events.postValue(Event(UiEvent.RedirectToLogin))
+            } else {
+                _events.postValue(Event(UiEvent.Error(errorMessage = it.errorMessage)))
+            }
+        })
     }
 
     sealed class UiAction {
@@ -37,5 +36,6 @@ class DeleteAccountViewModel: ViewModel() {
 
     sealed class UiEvent {
         object RedirectToLogin: UiEvent()
+        data class Error(val errorMessage: String): UiEvent()
     }
 }

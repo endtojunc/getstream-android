@@ -65,8 +65,12 @@
 
     <!-- Delete Account Screen-->
     <string name="delete_account_title">Delete Account</string>
-    <string name="delete_account_description">Doing so will remove all your user settings &amp; data.</string>
+    <string name="delete_account_description">Doing so will remove all your user settings &amp; data.\nEnter your username to proceed</string>
     <string name="delete_button_title">Delete</string>
+    <string name="delete_account_message_dialog_title">Delete account</string>
+    <string name="delete_account_message_dialog_message">Are you sure you want to delete your account?</string>
+    <string name="delete_account_message_dialog_yes">Yes</string>
+    <string name="delete_account_message_dialog_no">No</string>
 
     <!--Home screen-->
     <string name="home_drawer_new_direct_message">New Direct Message</string>

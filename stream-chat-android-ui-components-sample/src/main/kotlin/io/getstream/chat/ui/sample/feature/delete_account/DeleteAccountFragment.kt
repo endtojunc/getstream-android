@@ -6,8 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.kongzue.dialogx.dialogs.MessageDialog
 import io.getstream.chat.android.livedata.utils.EventObserver
+import io.getstream.chat.ui.sample.R
+import io.getstream.chat.ui.sample.common.navigateSafely
 import io.getstream.chat.ui.sample.databinding.FragmentDeleteAccountBinding
+import io.getstream.chat.ui.sample.feature.home.HomeFragmentDirections
 
 class DeleteAccountFragment: Fragment() {
 
@@ -28,8 +32,16 @@ class DeleteAccountFragment: Fragment() {
 
     private fun setupViews() {
         binding.deleteButton.setOnClickListener {
-            val username = ""
-            viewModel.onUiAction(DeleteAccountViewModel.UiAction.DeleteClicked(username = username))
+            MessageDialog.show(
+                getString(R.string.delete_account_message_dialog_title),
+                getString(R.string.delete_account_message_dialog_message),
+                getString(R.string.delete_account_message_dialog_yes),
+                getString(R.string.delete_account_message_dialog_no)
+            ).setOkButton { _, _ -> Boolean
+                val username = binding.usernameEditText.text.toString()
+                viewModel.onUiAction(DeleteAccountViewModel.UiAction.DeleteClicked(username = username))
+                false
+            }
         }
     }
 
@@ -37,7 +49,13 @@ class DeleteAccountFragment: Fragment() {
         viewModel.events.observe(viewLifecycleOwner,
             EventObserver {
                 when(it) {
-                    is DeleteAccountViewModel.UiEvent.RedirectToLogin -> {}
+                    is DeleteAccountViewModel.UiEvent.RedirectToLogin -> {
+                        navigateSafely(HomeFragmentDirections.actionToUserCustomLoginFragment())
+                    }
+                    is DeleteAccountViewModel.UiEvent.Error -> {
+                        binding.errorTitle.text = it.errorMessage
+                        binding.errorTitle.visibility = View.VISIBLE
+                    }
                 }
             }
         )
