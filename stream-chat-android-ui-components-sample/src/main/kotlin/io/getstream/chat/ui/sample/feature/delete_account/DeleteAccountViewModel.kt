@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.getstream.chat.android.livedata.utils.Event
+import io.getstream.chat.ui.sample.application.App
 import io.getstream.chat.ui.sample.common.NetworkWorker
 import io.getstream.logging.StreamLog
 
@@ -23,6 +24,7 @@ class DeleteAccountViewModel: ViewModel() {
     private fun deleteUser(username: String) {
         networkWorker.deleteAccount(username, callback = {
             if (it.isSuccess) {
+                App.instance.userRepository.clearUser()
                 _events.postValue(Event(UiEvent.RedirectToLogin))
             } else {
                 _events.postValue(Event(UiEvent.Error(errorMessage = it.errorMessage)))
