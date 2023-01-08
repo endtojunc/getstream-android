@@ -33,6 +33,6 @@
         android:id="@+id/settings_fragment"
         android:name="io.getstream.chat.ui.sample.feature.settings.SettingsFragment"
         android:label="SettingsFragment"
-        tools:layout="@layout/fragment_mentions"
-        />
+        tools:layout="@layout/fragment_mentions">
+    </fragment>
 </navigation>

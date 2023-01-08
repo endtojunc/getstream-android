@@ -54,7 +54,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:background="@color/alert_red"
+        android:background="@drawable/shape_error_view"
         android:textColor="@color/black"
         tools:text="This is where the error message shown."
         android:gravity="center"

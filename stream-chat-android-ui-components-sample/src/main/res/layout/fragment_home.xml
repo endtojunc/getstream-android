@@ -36,6 +36,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_height="56dp"
+            app:streamUiShowUserAvatar="false"
             />
 
         <androidx.fragment.app.FragmentContainerView

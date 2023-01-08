@@ -71,6 +71,9 @@ class HomeFragment : Fragment() {
     @OptIn(InternalStreamChatApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.channelListHeaderView.setOnlineTitle(getString(R.string.home_title))
+
         parseNotificationData()
         setupBottomNavigation()
         setupNavigationDrawer()

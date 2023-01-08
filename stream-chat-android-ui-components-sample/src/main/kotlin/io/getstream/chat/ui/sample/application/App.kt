@@ -17,6 +17,7 @@
 package io.getstream.chat.ui.sample.application
 
 import android.app.Application
+import com.kongzue.dialogx.DialogX
 import io.getstream.chat.android.client.utils.internal.toggle.ToggleService
 import io.getstream.chat.android.core.internal.InternalStreamChatApi
 import io.getstream.chat.ui.sample.data.user.SampleUser
@@ -35,6 +36,7 @@ class App : Application() {
         instance = this
         DebugMetricsHelper.init()
         ApplicationConfigurator.configureApp(this)
+        DialogX.init(this)
     }
 
     private fun getApiKey(): String {

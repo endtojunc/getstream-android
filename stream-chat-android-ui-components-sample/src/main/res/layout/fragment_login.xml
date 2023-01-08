@@ -49,20 +49,6 @@
         app:layout_constraintTop_toBottomOf="@+id/titleTextView"
         />
 
-    <TextView
-        android:id="@+id/errorTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/summaryTextView"
-        android:textColor="@color/red"
-        app:layout_constraintBottom_toTopOf="@id/separator"
-        tools:text="This is error message"
-        android:gravity="center"
-        android:visibility="gone"/>
-
     <View
         android:id="@+id/separator"
         android:layout_width="0dp"
@@ -71,7 +57,7 @@
         android:background="@drawable/stream_ui_divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/errorTitle"
+        app:layout_constraintTop_toBottomOf="@id/summaryTextView"
         />
 
     <androidx.constraintlayout.helper.widget.Flow
@@ -82,7 +68,7 @@
         android:layout_marginTop="@dimen/spacing_medium"
         android:layout_marginEnd="@dimen/spacing_medium"
         android:layout_marginBottom="60dp"
-        app:constraint_referenced_ids="userNameInputLayout, passwordInputLayout"
+        app:constraint_referenced_ids="errorTitle, userNameInputLayout, passwordInputLayout"
         app:flow_lastVerticalStyle="packed"
         app:flow_maxElementsWrap="1"
         app:flow_verticalGap="8dp"
@@ -93,6 +79,19 @@
         app:layout_constraintTop_toBottomOf="@+id/separator"
         app:layout_constraintVertical_bias="0"
         />
+
+    <TextView
+        android:id="@+id/errorTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/shape_error_view"
+        android:paddingTop="@dimen/spacing_small"
+        android:paddingBottom="@dimen/spacing_small"
+        android:textColor="@color/black"
+        tools:text="This is where the error message shown."
+        android:gravity="center"
+        android:visibility="gone"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/userNameInputLayout"

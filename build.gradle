@@ -68,6 +68,9 @@ allprojects {
         mavenCentral()
         maven {
             url "https://jitpack.io"
+        }
+        maven {
+            url "https://jitpack.io"
             content {
                 includeModule("com.github.chrisbanes", "PhotoView")
 

@@ -3,13 +3,16 @@ package io.getstream.chat.ui.sample.feature.user_custom_login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import io.getstream.chat.android.client.ChatClient
+import io.getstream.chat.android.client.models.ConnectionData
 import io.getstream.chat.android.client.utils.Result
 import io.getstream.chat.android.livedata.utils.Event
 import io.getstream.chat.ui.sample.application.App
+import io.getstream.chat.ui.sample.application.AppConfig
 import io.getstream.chat.ui.sample.common.NetworkWorker
-import io.getstream.chat.ui.sample.data.user.LoginResult
 import io.getstream.chat.ui.sample.data.user.SampleUser
 import io.getstream.logging.StreamLog
+import io.getstream.chat.android.client.models.User as ChatUser
 
 class UserCustomLoginViewModel: ViewModel() {
 
@@ -25,7 +28,7 @@ class UserCustomLoginViewModel: ViewModel() {
     fun init() {
         val user = App.instance.userRepository.getUser()
         if (user != SampleUser.None) {
-
+            setUserToStream(user)
         }
     }
 
@@ -39,11 +42,40 @@ class UserCustomLoginViewModel: ViewModel() {
 
     private fun authenticateUser(username: String, password: String) {
         networkWorker.authenticateUser(username, password, callback = {
-            print(it.response)
+            if (it.isSuccess) {
+                setUserToStream(SampleUser(
+                    id = String.format("%s", it.response?.get("userId") as Int),
+                    name = it.response?.get("name") as String,
+                    token = it.response?.get("token") as String,
+                    apiKey = AppConfig.apiKey,
+                    image = ""
+                ))
+                _events.postValue(Event(UiEvent.RedirectToChannelList))
+            } else {
+                _events.postValue(Event(UiEvent.Error(errorMessage = it.errorMessage)))
+            }
         })
     }
 
-    fun handleLoginResult(result: Result<LoginResult>) {
+    private fun setUserToStream(user: SampleUser) {
+        App.instance.userRepository.setUser(user)
+
+        val chatUser = ChatUser().apply {
+            id = user.id
+            image = user.image
+            name = user.name
+        }
+
+        ChatClient.instance().run {
+                if (getCurrentUser() == null) {
+                    connectUser(chatUser, user.token).enqueue(::handleLoginResult)
+                }
+
+                _events.postValue(Event(UiEvent.RedirectToChannelList))
+        }
+    }
+
+    fun handleLoginResult(result: Result<ConnectionData>) {
         if (result.isSuccess) {
             _events.postValue(Event(UiEvent.RedirectToChannelList))
         } else {

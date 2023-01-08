@@ -28,7 +28,11 @@ class ForgotUserViewModel: ViewModel() {
 
     fun resetPassword(username: String, password: String, confirmPassword: String, generateOtp: String) {
         networkWorker.resetPassword(username, password, confirmPassword, generateOtp, callback = {
-
+            if (it.isSuccess) {
+                _events.postValue(Event(UiEvent.RedirectToLogin))
+            } else {
+                _events.postValue(Event(UiEvent.Error(errorMessage = it.errorMessage)))
+            }
         })
     }
 
@@ -42,5 +46,6 @@ class ForgotUserViewModel: ViewModel() {
 
     sealed class UiEvent {
         object RedirectToLogin: UiEvent()
+        data class Error(val errorMessage: String): UiEvent()
     }
 }

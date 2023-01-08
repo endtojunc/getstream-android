@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.kongzue.dialogx.dialogs.WaitDialog
 import io.getstream.chat.android.livedata.utils.EventObserver
 import io.getstream.chat.ui.sample.common.addChildFragment
 import io.getstream.chat.ui.sample.common.navigateSafely
@@ -40,6 +41,8 @@ class RegisterFragment: Fragment() {
         }
 
         binding.registerButton.setOnClickListener {
+            WaitDialog.show("Please wait")
+
             val username = binding.usernameEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
             val name = binding.nameEditText.text.toString()
@@ -64,6 +67,7 @@ class RegisterFragment: Fragment() {
         viewModel.events.observe(
             viewLifecycleOwner,
             EventObserver {
+                WaitDialog.dismiss()
                 when (it) {
                     is RegisterUserViewModel.UiEvent.RedirectToLogin -> {
                         showToast("User created successfully.")

@@ -136,6 +136,10 @@ repositories {
             includeGroup("com.huawei.hmf")
         }
     }
+
+    maven {
+        url 'url "https://jitpack.io'
+    }
 }
 
 dependencies {
@@ -171,6 +175,9 @@ dependencies {
 
     implementation 'com.hbb20:ccp:2.4.7'
     implementation 'io.michaelrocks:libphonenumber-android:8.13.3'
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
+    def dialogx_version = "0.0.47.beta15"
+    implementation "com.kongzue.dialogx:DialogX:${dialogx_version}"
 
     debugImplementation Dependencies.flipper
     debugImplementation Dependencies.flipperNetwork

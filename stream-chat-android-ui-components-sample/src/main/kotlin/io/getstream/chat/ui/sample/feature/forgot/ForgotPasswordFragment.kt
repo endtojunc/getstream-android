@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.kongzue.dialogx.dialogs.WaitDialog
 import io.getstream.chat.android.livedata.utils.EventObserver
 import io.getstream.chat.ui.sample.common.addChildFragment
 import io.getstream.chat.ui.sample.common.navigateSafely
@@ -38,9 +39,14 @@ class ForgotPasswordFragment: Fragment() {
         }
 
         binding.registerButton.setOnClickListener {
+            val username = binding.usernameEditText.text.toString()
             val newPassword = binding.passwordEditText.text.toString()
             val confirmPassword = binding.confirmPasswordEditText.text.toString()
-            binding.registerButton.setOnClickListener { viewModel.onUiAction(ForgotUserViewModel.UiAction.resetClicked(username = "", password = newPassword, confirmPasssword = confirmPassword, generateOtp = "")) }
+            WaitDialog.show("Please wait")
+            viewModel.onUiAction(ForgotUserViewModel.UiAction.resetClicked(username = username,
+                password = newPassword,
+                confirmPasssword = confirmPassword,
+                generateOtp = ""))
         }
     }
 
@@ -48,9 +54,14 @@ class ForgotPasswordFragment: Fragment() {
         viewModel.events.observe(
             viewLifecycleOwner,
             EventObserver {
+                WaitDialog.dismiss()
                 when (it) {
                     is ForgotUserViewModel.UiEvent.RedirectToLogin -> {
                         navigateSafely(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToUserCustomLoginFragment())
+                    }
+                    is ForgotUserViewModel.UiEvent.Error -> {
+                        binding.errorTitle.visibility = View.VISIBLE
+                        binding.errorTitle.text = it.errorMessage
                     }
                 }
             }
