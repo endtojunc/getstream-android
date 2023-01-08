@@ -76,7 +76,7 @@ class HomeFragment : Fragment() {
 
         parseNotificationData()
         setupBottomNavigation()
-        setupNavigationDrawer()
+        // setupNavigationDrawer()
         homeViewModel.state.observe(viewLifecycleOwner, ::renderState)
         homeViewModel.events.observe(
             viewLifecycleOwner,
@@ -190,41 +190,41 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupNavigationDrawer() {
-        AppBarConfiguration(
-            setOf(R.id.directChatFragment, R.id.groupChatFragment),
-            binding.drawerLayout
-        )
-        binding.navigationView.setupWithNavController(findNavController())
-
-        val header = binding.navigationView.getHeaderView(0)
-        avatarView = header.findViewById(R.id.avatarView)
-        nameTextView = header.findViewById(R.id.nameTextView)
-
-        binding.navigationView.setNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.directChatFragment -> {
-                    navigateSafely(R.id.action_homeFragment_to_addChannelFragment)
-                    binding.drawerLayout.close()
-                    true
-                }
-                R.id.groupChatFragment -> {
-                    navigateSafely(R.id.action_homeFragment_to_addGroupChannelFragment)
-                    binding.drawerLayout.close()
-                    true
-                }
-                else -> false
-            }
-        }
-
-        binding.switchUserTextView.setOnClickListener {
-            homeViewModel.onUiAction(HomeViewModel.UiAction.SwitchUserClicked)
-        }
-        binding.signOutTextView.setOnClickListener {
-            homeViewModel.onUiAction(HomeViewModel.UiAction.LogoutClicked)
-        }
-        binding.versionName.text = BuildConfig.VERSION_NAME
-    }
+    // private fun setupNavigationDrawer() {
+    //     AppBarConfiguration(
+    //         setOf(R.id.directChatFragment, R.id.groupChatFragment),
+    //         binding.drawerLayout
+    //     )
+    //     binding.navigationView.setupWithNavController(findNavController())
+    //
+    //     val header = binding.navigationView.getHeaderView(0)
+    //     avatarView = header.findViewById(R.id.avatarView)
+    //     nameTextView = header.findViewById(R.id.nameTextView)
+    //
+    //     binding.navigationView.setNavigationItemSelectedListener { item ->
+    //         when (item.itemId) {
+    //             R.id.directChatFragment -> {
+    //                 navigateSafely(R.id.action_homeFragment_to_addChannelFragment)
+    //                 binding.drawerLayout.close()
+    //                 true
+    //             }
+    //             R.id.groupChatFragment -> {
+    //                 navigateSafely(R.id.action_homeFragment_to_addGroupChannelFragment)
+    //                 binding.drawerLayout.close()
+    //                 true
+    //             }
+    //             else -> false
+    //         }
+    //     }
+    //
+    //     binding.switchUserTextView.setOnClickListener {
+    //         homeViewModel.onUiAction(HomeViewModel.UiAction.SwitchUserClicked)
+    //     }
+    //     binding.signOutTextView.setOnClickListener {
+    //         homeViewModel.onUiAction(HomeViewModel.UiAction.LogoutClicked)
+    //     }
+    //     binding.versionName.text = BuildConfig.VERSION_NAME
+    // }
 
     private fun renderState(state: HomeViewModel.UiState) {
         binding.bottomNavigationView.apply {
@@ -232,7 +232,7 @@ class HomeFragment : Fragment() {
             setBadgeNumber(R.id.settings_fragment, state.mentionsUnreadCount)
         }
 
-        nameTextView.text = state.user.name
-        avatarView.setUserData(state.user)
+        // nameTextView.text = state.user.name
+        // avatarView.setUserData(state.user)
     }
 }

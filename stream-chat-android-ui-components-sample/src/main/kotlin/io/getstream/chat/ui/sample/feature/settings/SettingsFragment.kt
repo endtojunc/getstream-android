@@ -11,13 +11,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.kongzue.dialogx.dialogs.MessageDialog
 import io.getstream.chat.android.livedata.utils.EventObserver
 import io.getstream.chat.ui.sample.R
 import io.getstream.chat.ui.sample.common.navigateSafely
 import io.getstream.chat.ui.sample.common.showToast
 import io.getstream.chat.ui.sample.databinding.FragmentSettingsBinding
+import io.getstream.chat.ui.sample.feature.delete_account.DeleteAccountViewModel
 import io.getstream.chat.ui.sample.feature.home.HomeFragmentDirections
-import io.getstream.chat.ui.sample.feature.register.RegisterFragmentDirections
 
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
@@ -44,7 +45,19 @@ class SettingsFragment : Fragment() {
     private fun setupViews() {
         with(binding.logoutTextView) {
             text = getString(R.string.home_drawer_sign_out)
-            setOnClickListener { viewModel.onUiAction(SettingsViewModel.UiAction.LogoutClicked) }
+            setOnClickListener {
+                MessageDialog.show(
+                    getString(R.string.settings_signout_dialog_title),
+                    getString(R.string.settings_signout_dialog_message),
+                    getString(R.string.settings_signout_dialog_ok),
+                    getString(R.string.settings_signout_dialog_no)
+                ).setOkButton { _, _ ->
+                    Boolean
+                    viewModel.onUiAction(SettingsViewModel.UiAction.LogoutClicked)
+                    false
+                }
+                false
+            }
         }
 
         with(binding.deleteTextView) {
