@@ -1,6 +1,5 @@
 package io.getstream.chat.ui.sample.feature.forgot
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.kongzue.dialogx.dialogs.WaitDialog
 import io.getstream.chat.android.livedata.utils.EventObserver
+import io.getstream.chat.ui.sample.R
 import io.getstream.chat.ui.sample.common.addChildFragment
 import io.getstream.chat.ui.sample.common.navigateSafely
 import io.getstream.chat.ui.sample.databinding.FragmentForgotPasswordBinding
@@ -33,7 +33,7 @@ class ForgotPasswordFragment: Fragment() {
     }
 
     private fun setupViews() {
-        binding.toolbar.setNavigationIcon(R.drawable.ic_delete)
+        binding.toolbar.setNavigationIcon(R.drawable.ic_back)
         binding.toolbar.setNavigationOnClickListener {
             navigateSafely(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToUserCustomLoginFragment())
         }

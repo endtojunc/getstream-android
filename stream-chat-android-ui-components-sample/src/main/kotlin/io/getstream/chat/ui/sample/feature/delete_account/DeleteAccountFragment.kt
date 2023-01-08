@@ -11,6 +11,7 @@ import io.getstream.chat.android.livedata.utils.EventObserver
 import io.getstream.chat.ui.sample.R
 import io.getstream.chat.ui.sample.common.navigateSafely
 import io.getstream.chat.ui.sample.databinding.FragmentDeleteAccountBinding
+import io.getstream.chat.ui.sample.feature.forgot.ForgotPasswordFragmentDirections
 import io.getstream.chat.ui.sample.feature.home.HomeFragmentDirections
 
 class DeleteAccountFragment: Fragment() {
@@ -31,6 +32,11 @@ class DeleteAccountFragment: Fragment() {
     }
 
     private fun setupViews() {
+        binding.toolbar.setNavigationIcon(R.drawable.ic_back)
+        binding.toolbar.setNavigationOnClickListener {
+            navigateSafely(ForgotPasswordFragmentDirections.actionForgotPasswordFragmentToUserCustomLoginFragment())
+        }
+
         binding.deleteButton.setOnClickListener {
             MessageDialog.show(
                 getString(R.string.delete_account_message_dialog_title),
