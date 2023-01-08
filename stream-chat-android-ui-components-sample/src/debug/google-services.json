@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "29134705726",
+    "project_id": "getstream-android",
+    "storage_bucket": "getstream-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:29134705726:android:13b6c93b98dc2e8198ad6f",
+        "android_client_info": {
+          "package_name": "com.mychatapps.gepochat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "29134705726-juigcgg9oe37ehtgnfqkt4k76r3k1mgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVcVuXolZG55Aihaueixp3zFqXuoKqFOw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "29134705726-juigcgg9oe37ehtgnfqkt4k76r3k1mgj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:29134705726:android:535101f5237140d898ad6f",
+        "android_client_info": {
+          "package_name": "com.mychatapps.gepochat.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "29134705726-juigcgg9oe37ehtgnfqkt4k76r3k1mgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVcVuXolZG55Aihaueixp3zFqXuoKqFOw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "29134705726-juigcgg9oe37ehtgnfqkt4k76r3k1mgj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

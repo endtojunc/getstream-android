@@ -184,6 +184,13 @@
     <fragment android:id="@+id/deleteAccountFragment"
         android:name="io.getstream.chat.ui.sample.feature.delete_account.DeleteAccountFragment"
         android:label="DeleteAccountFragment">
+        <action
+            android:id="@+id/action_deleteAccountFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/main_navigation"
+            app:popUpToInclusive="true"
+            />
     </fragment>
 
     <fragment
