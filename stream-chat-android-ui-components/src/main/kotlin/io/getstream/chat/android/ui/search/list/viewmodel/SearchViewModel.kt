@@ -169,15 +169,16 @@ public class SearchViewModel : ViewModel() {
         logger.d { "Searching for \"$query\" with offset: $offset" }
         val currentUser = requireNotNull(ChatClient.instance().getCurrentUser())
         // TODO: use the pagination based on "limit" nad "next" params here
-        return ChatClient.instance()
+        val messages =  ChatClient.instance()
             .searchMessages(
                 channelFilter = Filters.`in`("members", listOf(currentUser.id)),
-                messageFilter = Filters.autocomplete("text", query),
+                messageFilter = Filters.autocomplete("text", ""),
                 offset = offset,
                 limit = QUERY_LIMIT,
             )
             .await()
             .map { it.messages }
+        return messages
     }
 
     /**

@@ -17,7 +17,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/userCustomLoginFragment"
+    app:startDestination="@id/userLoginFragment"
     >
 
     <fragment
@@ -185,7 +185,16 @@
         android:name="io.getstream.chat.ui.sample.feature.delete_account.DeleteAccountFragment"
         android:label="DeleteAccountFragment">
         <action
-            android:id="@+id/action_deleteAccountFragment_to_homeFragment"
+            android:id="@+id/action_to_userCustomLoginFragment"
+            app:destination="@+id/userCustomLoginFragment"
+            app:launchSingleTop="true"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popUpTo="@id/main_navigation"
+            app:popUpToInclusive="true"
+            />
+
+        <action
+            android:id="@+id/action_to_settingsFragment"
             app:destination="@id/homeFragment"
             app:launchSingleTop="true"
             app:popUpTo="@+id/main_navigation"

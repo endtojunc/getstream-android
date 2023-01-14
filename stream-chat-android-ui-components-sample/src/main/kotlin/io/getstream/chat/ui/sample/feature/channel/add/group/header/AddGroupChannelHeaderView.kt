@@ -54,8 +54,13 @@ class AddGroupChannelHeaderView : FrameLayout, AddChannelHeader {
 
     private fun init() {
         binding.membersRecyclerView.adapter = adapter
-        binding.usersSearchView.setDebouncedInputChangedListener {
-            membersInputListener.onMembersInputChanged(it)
+        // binding.usersSearchView.setDebouncedInputChangedListener {
+        //     membersInputListener.onMembersInputChanged(it)
+        // }
+        binding.usersSearchView.apply {
+            setSearchStartedListener {
+                membersInputListener.onMembersInputChanged(it)
+            }
         }
     }
 

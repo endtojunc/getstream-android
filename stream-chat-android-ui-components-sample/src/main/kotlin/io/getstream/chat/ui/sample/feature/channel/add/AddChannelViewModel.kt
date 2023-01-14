@@ -62,17 +62,21 @@ class AddChannelViewModel : ViewModel() {
     }
 
     private fun requestUsers(isRequestingMore: Boolean) {
-        if (!isRequestingMore) {
-            _state.value = State.Loading
-        }
-        latestSearchCall?.cancel()
-        latestSearchCall = chatClient.queryUsers(createSearchQuery(searchQuery, offset, USERS_LIMIT, true))
-        latestSearchCall?.enqueue { result ->
-            if (result.isSuccess) {
-                val users = result.data()
-                _state.postValue(if (isRequestingMore) State.ResultMoreUsers(users) else State.Result(users))
-                updatePaginationData(users)
+        if (searchQuery != "") {
+            if (!isRequestingMore) {
+                _state.value = State.Loading
             }
+            latestSearchCall?.cancel()
+            latestSearchCall = chatClient.queryUsers(createSearchQuery(searchQuery, offset, USERS_LIMIT, true))
+            latestSearchCall?.enqueue { result ->
+                if (result.isSuccess) {
+                    val users = result.data()
+                    _state.postValue(if (isRequestingMore) State.ResultMoreUsers(users) else State.Result(users))
+                    updatePaginationData(users)
+                }
+            }
+        } else {
+            _state.postValue(State.Result(listOf()))
         }
     }
 
@@ -86,7 +90,7 @@ class AddChannelViewModel : ViewModel() {
             }
         } else {
             createFilter(
-                Filters.autocomplete(FIELD_NAME, querySearch),
+                Filters.eq(FIELD_NAME, querySearch),
                 chatClient.getCurrentUser()?.id?.let { id -> Filters.ne(FIELD_ID, id) }
             )
         }

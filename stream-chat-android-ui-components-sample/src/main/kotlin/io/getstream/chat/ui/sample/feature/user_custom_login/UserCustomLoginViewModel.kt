@@ -44,7 +44,7 @@ class UserCustomLoginViewModel: ViewModel() {
         networkWorker.authenticateUser(username, password, callback = {
             if (it.isSuccess) {
                 setUserToStream(SampleUser(
-                    id = String.format("%s", it.response?.get("userId") as Int),
+                    id = String.format("%s", it.response?.get("username") as Int),
                     name = it.response?.get("name") as String,
                     token = it.response?.get("token") as String,
                     apiKey = AppConfig.apiKey,

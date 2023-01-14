@@ -35,7 +35,7 @@ class AddChannelViewController(
     private val createGroupContainer: ViewGroup,
     private val messageListView: MessageListView,
     private val messageInputView: MessageInputView,
-    private val emptyStateView: View,
+    private val emptyStateView: TextView,
     private val loadingView: View,
     private val isAddGroupChannel: Boolean,
 ) {
@@ -71,6 +71,7 @@ class AddChannelViewController(
             setMemberClickListener {
                 onUserClicked(UserInfo(it, true))
             }
+            emptyStateView.text = viewContext.getString(R.string.add_channel_user_start_typing)
         }
     }
 
@@ -102,6 +103,9 @@ class AddChannelViewController(
 
     private fun showUsersView() {
         usersRecyclerView.isVisible = userInfoList.isNotEmpty()
+        headerView.apply {
+            emptyStateView.text = viewContext.getString(R.string.add_channel_empty_users_title)
+        }
         emptyStateView.isVisible = userInfoList.isEmpty()
         usersTitle.isVisible = true
         messageListView.isVisible = false

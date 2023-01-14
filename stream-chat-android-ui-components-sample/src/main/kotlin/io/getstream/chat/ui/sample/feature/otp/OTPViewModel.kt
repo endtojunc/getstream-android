@@ -22,9 +22,9 @@ class OTPViewModel: ViewModel() {
     fun getOtp(phoneNumber: String, countryCode: String) {
         networkWorker.generateOTP(phoneNumber, countryCode, callback = {
             if (it.isSuccess) {
-                _events.postValue(Event(UiEvent.ShowToast(message = "OTP successfully sent")))
+                _events.postValue(Event(UiEvent.ShowToast(isSuccess = true, message = "OTP successfully sent")))
             } else {
-                _events.postValue(Event(UiEvent.ShowToast(message = "Error")))
+                _events.postValue(Event(UiEvent.ShowToast(isSuccess = false, message = "Error")))
             }
         })
     }
@@ -35,6 +35,6 @@ class OTPViewModel: ViewModel() {
     }
 
     sealed class UiEvent {
-        data class ShowToast(val message: String): UiEvent()
+        data class ShowToast(val isSuccess: Boolean, val message: String): UiEvent()
     }
 }

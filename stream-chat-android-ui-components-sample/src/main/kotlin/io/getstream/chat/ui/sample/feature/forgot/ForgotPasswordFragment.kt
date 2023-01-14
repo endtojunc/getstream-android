@@ -42,11 +42,12 @@ class ForgotPasswordFragment: Fragment() {
             val username = binding.usernameEditText.text.toString()
             val newPassword = binding.passwordEditText.text.toString()
             val confirmPassword = binding.confirmPasswordEditText.text.toString()
+            val otp = otpFragment.getOtp()
             WaitDialog.show("Please wait")
             viewModel.onUiAction(ForgotUserViewModel.UiAction.resetClicked(username = username,
                 password = newPassword,
                 confirmPasssword = confirmPassword,
-                generateOtp = ""))
+                generateOtp = otp))
         }
     }
 

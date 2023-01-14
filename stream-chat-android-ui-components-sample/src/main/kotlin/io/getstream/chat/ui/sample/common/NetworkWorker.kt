@@ -81,7 +81,7 @@ class NetworkWorker {
     }
 
     fun resetPassword(username: String, password: String, confirmPassword: String, generateOtp: String, callback: (NetworkResponse) -> Unit)  {
-        val request = Endpoint(requestParams = mapOf("username" to username, "password" to password, "confirmpassword" to confirmPassword, "generateotp" to generateOtp), url = "ResetPasswordUser", httpMethod = HttpMethod.POST).toRequest()
+        val request = Endpoint(requestParams = mapOf("username" to username, "newpassword" to password, "confirmpassword" to confirmPassword, "generateotp" to generateOtp), url = "ResetPasswordUser", httpMethod = HttpMethod.POST).toRequest()
         val client = OkHttpClient()
         client.newCall(request).enqueue(object: Callback {
             override fun onFailure(call: Call, e: IOException) {
