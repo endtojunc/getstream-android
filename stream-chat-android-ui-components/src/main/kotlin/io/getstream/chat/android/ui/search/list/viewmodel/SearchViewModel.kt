@@ -20,6 +20,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.getstream.chat.android.client.ChatClient
+import io.getstream.chat.android.client.api.models.QueryChannelsRequest
 import io.getstream.chat.android.client.errors.ChatError
 import io.getstream.chat.android.client.models.Filters
 import io.getstream.chat.android.client.models.Message
@@ -133,6 +134,23 @@ public class SearchViewModel : ViewModel() {
     }
 
     /**
+     * Performs channel search based on the current state.
+     */
+    private fun searchChannels() {
+        job = scope.launch {
+            val currentState = _state.value!!
+            val filter = Filters.`in`("members", listOf("thierry", currentState.query))
+            val result = ChatClient.instance().queryChannels(QueryChannelsRequest(filter, limit = 100)).await()
+
+            if (result.isSuccess) {
+                //handleSearchMessageSuccess(result.data())
+            } else {
+                handleSearchMessagesError(result.error())
+            }
+        }
+    }
+
+    /**
      * Notifies the UI about the search results and enables the pagination.
      */
     private fun handleSearchMessageSuccess(messages: List<Message>) {
@@ -172,7 +190,7 @@ public class SearchViewModel : ViewModel() {
         val messages =  ChatClient.instance()
             .searchMessages(
                 channelFilter = Filters.`in`("members", listOf(currentUser.id)),
-                messageFilter = Filters.autocomplete("text", ""),
+                messageFilter = Filters.autocomplete("text", query),
                 offset = offset,
                 limit = QUERY_LIMIT,
             )

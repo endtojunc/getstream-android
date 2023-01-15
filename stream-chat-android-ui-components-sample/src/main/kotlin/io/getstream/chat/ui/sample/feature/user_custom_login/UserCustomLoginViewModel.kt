@@ -44,13 +44,12 @@ class UserCustomLoginViewModel: ViewModel() {
         networkWorker.authenticateUser(username, password, callback = {
             if (it.isSuccess) {
                 setUserToStream(SampleUser(
-                    id = String.format("%s", it.response?.get("username") as Int),
+                    id = String.format("%s", it.response?.get("username") as String),
                     name = it.response?.get("name") as String,
                     token = it.response?.get("token") as String,
                     apiKey = AppConfig.apiKey,
                     image = ""
                 ))
-                _events.postValue(Event(UiEvent.RedirectToChannelList))
             } else {
                 _events.postValue(Event(UiEvent.Error(errorMessage = it.errorMessage)))
             }
@@ -67,11 +66,9 @@ class UserCustomLoginViewModel: ViewModel() {
         }
 
         ChatClient.instance().run {
-                if (getCurrentUser() == null) {
-                    connectUser(chatUser, user.token).enqueue(::handleLoginResult)
-                }
-
-                _events.postValue(Event(UiEvent.RedirectToChannelList))
+            if (getCurrentUser() == null) {
+                connectUser(chatUser, user.token).enqueue(::handleLoginResult)
+            }
         }
     }
 

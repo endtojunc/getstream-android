@@ -120,6 +120,7 @@
             android:id="@+id/passwordEditText"
             style="@style/LoginEditText"
             tools:ignore="RtlHardcoded"
+            android:inputType="textPassword"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
