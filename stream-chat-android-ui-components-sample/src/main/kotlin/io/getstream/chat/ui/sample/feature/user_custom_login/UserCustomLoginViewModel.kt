@@ -69,12 +69,13 @@ class UserCustomLoginViewModel: ViewModel() {
             if (getCurrentUser() == null) {
                 connectUser(chatUser, user.token).enqueue(::handleLoginResult)
             }
+            _events.postValue(Event(UiEvent.RedirectToChannelList))
         }
     }
 
     fun handleLoginResult(result: Result<ConnectionData>) {
         if (result.isSuccess) {
-            _events.postValue(Event(UiEvent.RedirectToChannelList))
+            logger.d { "User set successfully" }
         } else {
             _events.postValue(Event(UiEvent.Error(result.error().message)))
             logger.d { "Failed to set user ${result.error()}" }

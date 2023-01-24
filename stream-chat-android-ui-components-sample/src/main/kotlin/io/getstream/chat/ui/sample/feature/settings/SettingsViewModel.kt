@@ -51,9 +51,8 @@ class SettingsViewModel(
         when (action) {
             is UiAction.LogoutClicked -> {
                 viewModelScope.launch {
-                    chatClient.disconnect(false).await()
+                    chatClient.disconnect(true).await()
                     App.instance.userRepository.clearUser()
-                    ChatClient.instance().disconnect(false).enqueue()
                     _events.postValue(Event(UIEvent.RedirectToLogout))
                 }
             }

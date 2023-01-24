@@ -63,12 +63,12 @@ class DeleteAccountFragment: Fragment() {
     private fun observeStateAndEvents() {
         viewModel.events.observe(viewLifecycleOwner,
             EventObserver {
+                WaitDialog.dismiss()
                 when(it) {
                     is DeleteAccountViewModel.UiEvent.RedirectToLogin -> {
                         navigateSafely(HomeFragmentDirections.actionToUserCustomLoginFragment())
                     }
                     is DeleteAccountViewModel.UiEvent.Error -> {
-                        WaitDialog.dismiss()
                         binding.errorTitle.text = it.errorMessage
                         binding.errorTitle.visibility = View.VISIBLE
                     }
