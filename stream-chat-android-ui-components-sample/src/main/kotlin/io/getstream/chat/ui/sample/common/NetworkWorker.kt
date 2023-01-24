@@ -30,12 +30,16 @@ class NetworkWorker {
                 var errorMessage = ""
                 response.body?.let {
                     if (!response.isSuccessful) {
-                        val jsonArray = JSONArray(it.string())
-                        if (jsonArray.length() > 0) {
-                            val jsonObject = jsonArray.getJSONObject(0)
-                            if (jsonObject.has("errorMessages")) {
-                                errorMessage = jsonObject.getJSONArray("errorMessages").join("\n").replace("\"", "", false)
+                        if (response.code in 100..499) {
+                            val jsonArray = JSONArray(it.string())
+                            if (jsonArray.length() > 0) {
+                                val jsonObject = jsonArray.getJSONObject(0)
+                                if (jsonObject.has("errorMessages")) {
+                                    errorMessage = jsonObject.getJSONArray("errorMessages").join("\n").replace("\"", "", false)
+                                }
                             }
+                        } else {
+                            errorMessage = response.message
                         }
                     } else {
                         val jsonObject = JSONObject(it.string())
@@ -65,12 +69,16 @@ class NetworkWorker {
                 var errorMessage = ""
                 response.body?.let {
                     if (!response.isSuccessful) {
-                        val jsonArray = JSONArray(it.string())
-                        if (jsonArray.length() > 0) {
-                            val jsonObject = jsonArray.getJSONObject(0)
-                            if (jsonObject.has("errorMessages")) {
-                                errorMessage = jsonObject.getJSONArray("errorMessages").join("\n").replace("\"", "", false)
+                        if (response.code in 100..499) {
+                            val jsonArray = JSONArray(it.string())
+                            if (jsonArray.length() > 0) {
+                                val jsonObject = jsonArray.getJSONObject(0)
+                                if (jsonObject.has("errorMessages")) {
+                                    errorMessage = jsonObject.getJSONArray("errorMessages").join("\n").replace("\"", "", false)
+                                }
                             }
+                        } else {
+                            errorMessage = response.message
                         }
                     }
                 }
@@ -121,12 +129,16 @@ class NetworkWorker {
                 var errorMessage = ""
                 response.body?.let {
                     if (!response.isSuccessful) {
-                        val jsonArray = JSONArray(it.string())
-                        if (jsonArray.length() > 0) {
-                            val jsonObject = jsonArray.getJSONObject(0)
-                            if (jsonObject.has("errorMessages")) {
-                                errorMessage = jsonObject.getJSONArray("errorMessages").join("\n")
+                        if (response.code in 100..499) {
+                            val jsonArray = JSONArray(it.string())
+                            if (jsonArray.length() > 0) {
+                                val jsonObject = jsonArray.getJSONObject(0)
+                                if (jsonObject.has("errorMessages")) {
+                                    errorMessage = jsonObject.getJSONArray("errorMessages").join("\n")
+                                }
                             }
+                        } else {
+                            errorMessage = response.message
                         }
                     }
                 }
