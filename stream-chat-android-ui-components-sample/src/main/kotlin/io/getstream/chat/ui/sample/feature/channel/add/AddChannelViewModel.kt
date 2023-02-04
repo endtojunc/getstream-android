@@ -90,7 +90,7 @@ class AddChannelViewModel : ViewModel() {
             }
         } else {
             createFilter(
-                Filters.eq(FIELD_NAME, querySearch),
+                Filters.eq(FIELD_ID, querySearch),
                 chatClient.getCurrentUser()?.id?.let { id -> Filters.ne(FIELD_ID, id) }
             )
         }
