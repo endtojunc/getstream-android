@@ -29,6 +29,8 @@ class UserCustomLoginViewModel: ViewModel() {
         val user = App.instance.userRepository.getUser()
         if (user != SampleUser.None) {
             setUserToStream(user)
+        } else {
+            _events.postValue(Event(UiEvent.ShowLogin))
         }
     }
 
@@ -96,6 +98,7 @@ class UserCustomLoginViewModel: ViewModel() {
         object RedirectToChannelList: UiEvent()
         object RedirectToForgot: UiEvent()
         object RedirectToRegister: UiEvent()
+        object ShowLogin: UiEvent()
         data class Error(val errorMessage: String?) : UiEvent()
     }
 }

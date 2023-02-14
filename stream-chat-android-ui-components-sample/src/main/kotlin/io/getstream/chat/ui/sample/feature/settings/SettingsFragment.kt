@@ -84,7 +84,7 @@ class SettingsFragment : Fragment() {
         viewModel.state.observe(viewLifecycleOwner) {
             when (it) {
                 is SettingsViewModel.UiState -> {
-                    binding.nameTextView.text = it.user.name
+                    binding.nameTextView.text = it.user.name + " (" + it.user.id + ")"
                     binding.userAvatar.setUserData(it.user)
                 }
             }

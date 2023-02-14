@@ -69,6 +69,9 @@ class UserCustomLoginFragment: Fragment() {
                         binding.errorTitle.visibility = View.VISIBLE
                         binding.errorTitle.text = it.errorMessage
                     }
+                    is UserCustomLoginViewModel.UiEvent.ShowLogin -> {
+                        binding.splash.visibility = View.GONE
+                    }
                 }
             }
         )

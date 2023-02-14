@@ -20,14 +20,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.getstream.chat.android.client.ChatClient
+import io.getstream.chat.android.client.api.models.QueryChannelRequest
 import io.getstream.chat.android.client.api.models.QueryChannelsRequest
 import io.getstream.chat.android.client.errors.ChatError
+import io.getstream.chat.android.client.models.Channel
+import io.getstream.chat.android.client.models.ChannelInfo
 import io.getstream.chat.android.client.models.Filters
 import io.getstream.chat.android.client.models.Message
 import io.getstream.chat.android.client.utils.Result
 import io.getstream.chat.android.client.utils.map
+import io.getstream.chat.android.client.utils.toResult
 import io.getstream.chat.android.core.internal.coroutines.DispatcherProvider
 import io.getstream.chat.android.livedata.utils.Event
+import io.getstream.chat.android.offline.extensions.queryChannelsAsState
 import io.getstream.logging.StreamLog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -87,7 +92,12 @@ public class SearchViewModel : ViewModel() {
                 isLoading = true,
                 isLoadingMore = false,
             )
-            searchMessages()
+
+            if (query.first() == '@') {
+                searchChannels()
+            } else {
+                searchMessages()
+            }
         }
     }
 
@@ -139,15 +149,54 @@ public class SearchViewModel : ViewModel() {
     private fun searchChannels() {
         job = scope.launch {
             val currentState = _state.value!!
-            val filter = Filters.`in`("members", listOf("thierry", currentState.query))
-            val result = ChatClient.instance().queryChannels(QueryChannelsRequest(filter, limit = 100)).await()
+            val currentUser = requireNotNull(ChatClient.instance().getCurrentUser())
+            val filter = Filters.and(
+                Filters.`in`("members", listOf(currentUser.id)),
+                Filters.autocomplete("member.user.name", currentState.query),
+                Filters.eq("member_count", 2)
+            )
+
+            val query = QueryChannelsRequest(filter, limit = 100)
+            query.state = true
+
+            val result = ChatClient.instance().queryChannels(query).await()
 
             if (result.isSuccess) {
-                //handleSearchMessageSuccess(result.data())
+                val first = result.data().first()
+                val response = ChatClient.instance().queryChannel(first.type, first.id, QueryChannelRequest().withMessages(1).withMembers(1, offset = 0)).await()
+                if (response.isSuccess) {
+                    handleSearchChannelSuccess(response.data())
+                } else {
+                    handleSearchMessagesError(result.error())
+                }
             } else {
                 handleSearchMessagesError(result.error())
             }
         }
+    }
+
+    private fun handleSearchChannelSuccess(channel: Channel) {
+        val currentState = _state.value!!
+
+        var message = Message()
+        val member = channel.members.first().user
+        var text = channel.messages.first().text
+        message.user.name = member.name
+        var image = if (channel.image != "") {
+            channel.image
+        } else {
+            member.image
+        }
+        message.cid = channel.cid
+        message.channelInfo = ChannelInfo(channel.cid, name = channel.name, image = image)
+        message.text = text
+
+        _state.value = currentState.copy(
+            isLoading = false,
+            isLoadingMore = false,
+            results = listOf(message),
+            canLoadMore = false
+        )
     }
 
     /**
