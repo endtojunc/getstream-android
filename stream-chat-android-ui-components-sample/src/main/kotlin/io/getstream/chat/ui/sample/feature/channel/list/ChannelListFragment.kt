@@ -21,6 +21,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.activity.addCallback
@@ -32,6 +34,8 @@ import com.getstream.sdk.chat.utils.Utils
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.extensions.isAnonymousChannel
 import io.getstream.chat.android.client.models.Filters
+import io.getstream.chat.android.client.models.User
+import io.getstream.chat.android.livedata.utils.EventObserver
 import io.getstream.chat.android.ui.channel.list.viewmodel.ChannelListViewModel
 import io.getstream.chat.android.ui.channel.list.viewmodel.bindView
 import io.getstream.chat.android.ui.channel.list.viewmodel.factory.ChannelListViewModelFactory
@@ -40,12 +44,13 @@ import io.getstream.chat.android.ui.search.list.viewmodel.bindView
 import io.getstream.chat.ui.sample.R
 import io.getstream.chat.ui.sample.application.App
 import io.getstream.chat.ui.sample.common.navigateSafely
+import io.getstream.chat.ui.sample.common.showToast
 import io.getstream.chat.ui.sample.data.user.SampleUser
 import io.getstream.chat.ui.sample.databinding.FragmentChannelsBinding
 import io.getstream.chat.ui.sample.feature.common.ConfirmationDialogFragment
 import io.getstream.chat.ui.sample.feature.home.HomeFragmentDirections
 
-class ChannelListFragment : Fragment() {
+class ChannelListFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     private val viewModel: ChannelListViewModel by viewModels {
         val user = App.instance.userRepository.getUser()
@@ -68,6 +73,8 @@ class ChannelListFragment : Fragment() {
 
     private var _binding: FragmentChannelsBinding? = null
     private val binding get() = _binding!!
+    private lateinit var adapter: ArrayAdapter<String>
+    private lateinit var user: User
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,6 +82,14 @@ class ChannelListFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentChannelsBinding.inflate(inflater, container, false)
+        context?.let {
+            adapter = ArrayAdapter<String>(it, android.R.layout.simple_spinner_item)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinner.adapter = adapter
+            binding.spinner.setSelection(0,false)
+            binding.spinner.onItemSelectedListener = this
+        }
+
         return binding.root
     }
 
@@ -128,6 +143,8 @@ class ChannelListFragment : Fragment() {
                     .findNavController(R.id.hostFragmentContainer)
                     .navigateSafely(direction)
             }
+
+            observeStateAndEvents()
         }
 
         binding.searchInputView.apply {
@@ -161,5 +178,39 @@ class ChannelListFragment : Fragment() {
                 finish()
             }
         }
+    }
+
+    private fun observeStateAndEvents() {
+        searchViewModel.events.observe(
+            viewLifecycleOwner,
+            EventObserver {
+                when (it) {
+                    is SearchViewModel.UiEvent.NavigateToChannel -> {
+                        requireActivity().findNavController(R.id.hostFragmentContainer)
+                            .navigateSafely(HomeFragmentDirections.actionOpenChat(it.cid, ""))
+                    }
+                    is SearchViewModel.UiEvent.Error -> {
+                        showToast(it.errorMessage ?: getString(R.string.backend_error_info))
+                    }
+                    is SearchViewModel.UiEvent.ShowUser -> {
+                        adapter.clear()
+                        this.user = it.user
+                        adapter.add(it.user.id)
+                        adapter.notifyDataSetChanged()
+                        binding.spinner.isVisible = true
+                    }
+                }
+            }
+        )
+    }
+
+    override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+        if (user != null) {
+            searchViewModel.onUiAction(SearchViewModel.UiAction.StartChat(userId = user.id))
+        }
+    }
+
+    override fun onNothingSelected(p0: AdapterView<*>?) {
+
     }
 }

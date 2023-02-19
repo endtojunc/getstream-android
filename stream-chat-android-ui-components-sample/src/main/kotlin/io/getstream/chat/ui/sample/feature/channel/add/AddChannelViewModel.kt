@@ -22,11 +22,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.getstream.chat.android.client.ChatClient
 import io.getstream.chat.android.client.api.models.FilterObject
+import io.getstream.chat.android.client.api.models.QueryChannelsRequest
 import io.getstream.chat.android.client.api.models.QueryUsersRequest
 import io.getstream.chat.android.client.api.models.querysort.QuerySortByField
+import io.getstream.chat.android.client.api.models.querysort.QuerySortByField.Companion.descByName
 import io.getstream.chat.android.client.call.Call
 import io.getstream.chat.android.client.channel.ChannelClient
 import io.getstream.chat.android.client.models.Filters
+import io.getstream.chat.android.client.models.Member
 import io.getstream.chat.android.client.models.User
 import io.getstream.chat.ui.sample.common.CHANNEL_ARG_DRAFT
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +52,8 @@ class AddChannelViewModel : ViewModel() {
     private var latestSearchCall: Call<List<User>>? = null
 
     init {
-        requestUsers(isRequestingMore = false)
+        findRecentChatUsers()
+        // requestUsers(isRequestingMore = false)
     }
 
     fun onEvent(event: Event) {
@@ -77,6 +81,38 @@ class AddChannelViewModel : ViewModel() {
             }
         } else {
             _state.postValue(State.Result(listOf()))
+        }
+    }
+
+    private fun findRecentChatUsers() {
+        viewModelScope.launch {
+            val currentUser = requireNotNull(ChatClient.instance().getCurrentUser())
+            val filter = Filters.and(
+                Filters.`in`("members", listOf(currentUser.id)),
+                Filters.eq("member_count", 2)
+            )
+
+            val query = QueryChannelsRequest(filter, limit = 100)
+            query.state = true
+
+            val result = ChatClient.instance().queryChannels(query).await()
+
+            if (result.isSuccess && result.data().isNotEmpty()) {
+               var recentChatUsers = ArrayList<User>()
+                result.data().forEach {
+                   val response = ChatClient.instance().queryMembers(it.type, it.id, offset = 0, limit = 2, filter = Filters.neutral(), sort = QuerySortByField<Member>().descByName("id")).await()
+                   if (response.isSuccess && response.data().isNotEmpty()) {
+                        recentChatUsers.add(
+                            response.data().first {
+                                it.user.id != currentUser.id
+                            }.user,
+                        )
+                   }
+               }
+                _state.postValue(State.Result(recentChatUsers))
+            } else {
+
+            }
         }
     }
 

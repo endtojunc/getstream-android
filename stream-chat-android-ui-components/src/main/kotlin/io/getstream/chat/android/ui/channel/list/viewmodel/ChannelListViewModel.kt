@@ -79,7 +79,7 @@ import kotlinx.coroutines.launch
 public class ChannelListViewModel(
     private val filter: FilterObject? = null,
     private val sort: QuerySorter<Channel> = DEFAULT_SORT,
-    private val limit: Int = 30,
+    private val limit: Int = 100,
     private val messageLimit: Int = 1,
     private val memberLimit: Int = 30,
     private val chatEventHandlerFactory: ChatEventHandlerFactory = ChatEventHandlerFactory(),

@@ -44,6 +44,15 @@
         app:streamUiLoadingView="@layout/channels_loading_view"
         />
 
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchInputView"
+        android:visibility="gone"
+        />
     <io.getstream.chat.android.ui.search.list.SearchResultListView
         android:id="@+id/searchResultListView"
         android:layout_width="0dp"
