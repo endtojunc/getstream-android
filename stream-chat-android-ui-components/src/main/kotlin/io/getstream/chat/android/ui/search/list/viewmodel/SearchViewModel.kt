@@ -167,7 +167,7 @@ public class SearchViewModel : ViewModel() {
 
             if (result.isSuccess && result.data().isNotEmpty()) {
                 val first = result.data().first()
-                val response = ChatClient.instance().queryChannel(first.type, first.id, QueryChannelRequest().withMessages(1).withMembers(1, offset = 0)).await()
+                val response = ChatClient.instance().queryChannel(first.type, first.id, QueryChannelRequest().withMessages(1).withMembers(2, offset = 0)).await()
                 if (response.isSuccess) {
                     handleSearchChannelSuccess(response.data())
                 } else {
@@ -216,7 +216,7 @@ public class SearchViewModel : ViewModel() {
                 channelType = CHANNEL_MESSAGING_TYPE,
                 channelId = "",
                 memberIds = listOf(userId, currentUserId),
-                extraData = mapOf("draft" to true)
+                extraData = mapOf("draft" to false)
             ).await()
             if (result.isSuccess) {
                 val cid = result.data().cid
@@ -240,9 +240,10 @@ public class SearchViewModel : ViewModel() {
 
     private fun handleSearchChannelSuccess(channel: Channel) {
         val currentState = _state.value!!
+        val currentUser = requireNotNull(ChatClient.instance().getCurrentUser())
 
         var message = Message()
-        val member = channel.members.first().user
+        val member = channel.members.filter { it.user.id != currentUser.id }.first().user
         var text = ""
         if (channel.messages.isNotEmpty()) {
             text = channel.messages.first().text

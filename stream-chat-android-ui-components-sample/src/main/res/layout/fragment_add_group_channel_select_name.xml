@@ -50,7 +50,7 @@
         android:layout_marginStart="@dimen/spacing_medium"
         android:gravity="center_vertical"
         android:text="@string/add_group_channel_select_name_choose_title"
-        android:textColor="@color/stream_ui_text_color_secondary"
+        android:textColor="@color/red"
         android:textSize="@dimen/stream_ui_text_small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"

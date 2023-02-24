@@ -50,6 +50,7 @@ class AddChannelViewModel : ViewModel() {
     private var searchQuery: String = ""
     private var offset: Int = 0
     private var latestSearchCall: Call<List<User>>? = null
+    private var recentUsers: ArrayList<User>? = null
 
     init {
         findRecentChatUsers()
@@ -80,6 +81,12 @@ class AddChannelViewModel : ViewModel() {
                 }
             }
         } else {
+            recentUsers?.let {
+                if (it.isNotEmpty()) {
+                    _state.postValue(State.Result(it))
+                    return
+                }
+            }
             _state.postValue(State.Result(listOf()))
         }
     }
@@ -98,18 +105,18 @@ class AddChannelViewModel : ViewModel() {
             val result = ChatClient.instance().queryChannels(query).await()
 
             if (result.isSuccess && result.data().isNotEmpty()) {
-               var recentChatUsers = ArrayList<User>()
+                recentUsers = ArrayList<User>()
                 result.data().forEach {
                    val response = ChatClient.instance().queryMembers(it.type, it.id, offset = 0, limit = 2, filter = Filters.neutral(), sort = QuerySortByField<Member>().descByName("id")).await()
                    if (response.isSuccess && response.data().isNotEmpty()) {
-                        recentChatUsers.add(
+                       recentUsers?.add(
                             response.data().first {
                                 it.user.id != currentUser.id
                             }.user,
                         )
                    }
                }
-                _state.postValue(State.Result(recentChatUsers))
+                _state.postValue(State.Result(recentUsers!!))
             } else {
 
             }
@@ -170,7 +177,7 @@ class AddChannelViewModel : ViewModel() {
                 channelType = CHANNEL_MESSAGING_TYPE,
                 channelId = "",
                 memberIds = members.map(User::id) + currentUserId,
-                extraData = mapOf(CHANNEL_ARG_DRAFT to true)
+                extraData = mapOf(CHANNEL_ARG_DRAFT to false)
             ).await()
             if (result.isSuccess) {
                 val cid = result.data().cid

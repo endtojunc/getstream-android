@@ -64,7 +64,6 @@ class ChannelListFragment : Fragment(), AdapterView.OnItemSelectedListener {
             filter = Filters.and(
                 Filters.eq("type", "messaging"),
                 Filters.`in`("members", listOf(userId)),
-                Filters.or(Filters.notExists("draft"), Filters.eq("draft", false)),
             ),
             chatEventHandlerFactory = CustomChatEventHandlerFactory(),
         )
