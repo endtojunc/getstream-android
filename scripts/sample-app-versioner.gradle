@@ -9,7 +9,7 @@ static Boolean gitIsAvailable() {
     }
 }
 def isCI = System.getenv('CI')
-ext["sampleAppVersionCode"] = 1
+ext["sampleAppVersionCode"] = 3
 ext["sampleAppVersionName"] = Configuration.versionName
 if (isCI && gitIsAvailable()) {
     apply plugin: 'com.pascalwelsch.gitversioner'
